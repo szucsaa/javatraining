@@ -5,10 +5,14 @@ import java.util.Map;
 
 public class Dictionary {
 
-    private Map<String, String> dictionary = new HashMap<>();
+    private Map<String, String> wordpairs = new HashMap<>();
 
     public Map<String, String> getDictionary(String dictionaryFilePath) {
-        return dictionary;
+        return wordpairs;
+    }
+
+    public void addWordPairs(String key, String value){
+        wordpairs.put(key, value);
     }
 
 }
