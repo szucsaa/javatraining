@@ -1,0 +1,2 @@
+kutya:dog
+macska:cat
