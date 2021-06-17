@@ -1,4 +1,4 @@
-package hu.ittc.training.dictionary;
+package hu.ittc.training.dictionary.model;
 
 import java.util.HashMap;
 import java.util.Map;
