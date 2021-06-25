@@ -4,6 +4,8 @@ import java.util.List;
 
 public class Book {
 
+    private String name;
+
     private List<String> bookContent;
 
     public List<String> getBookContent() {
@@ -13,4 +15,13 @@ public class Book {
     public void setBookContent(List<String> bookContent) {
         this.bookContent = bookContent;
     }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
 }
