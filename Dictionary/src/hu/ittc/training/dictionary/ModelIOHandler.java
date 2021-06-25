@@ -7,18 +7,19 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ModelReader {
+public class ModelIOHandler {
 
     public void readDictionaryFile(Dictionary dictionary, String filePath) {
         String line;
         try {
-            FileInputStream File = new FileInputStream(filePath);
-            InputStreamReader ir = new InputStreamReader(File);
-            BufferedReader br = new BufferedReader(ir);
+            File dictFile = new File(filePath);
+            dictionary.setName(dictFile.getName());
+            FileReader file = new FileReader(dictFile);
+            BufferedReader br = new BufferedReader(file);
 
             while ((line = br.readLine()) != null) {
                 String[] dictionaryLine = line.split(":");
-                dictionary.addWordPairs(dictionaryLine[0], dictionaryLine[1]);
+                dictionary.addWordPair(dictionaryLine[0], dictionaryLine[1]);
             }
             br.close();
         } catch (IOException e) {
@@ -26,19 +27,34 @@ public class ModelReader {
         }
     }
 
-    public List<String> readBookContent(Book book, String path) {
+    public void readBookContent(Book book, String path) {
         List<String> bookContentByLines = new ArrayList<>();
         String line;
         try {
-            FileReader file = new FileReader(path);
+            File bookFile = new File(path);
+            book.setName(bookFile.getName());
+            FileReader file = new FileReader(bookFile);
             BufferedReader br = new BufferedReader(file);
             while ((line = br.readLine()) != null) {
                 bookContentByLines.add(line);
             }
             book.setBookContent(bookContentByLines);
+            br.close();
         } catch (IOException ioe) {
             System.out.println(ioe.getMessage());
         }
-        return bookContentByLines;
+    }
+
+    public void writeBookContent(Book book, String path){
+        List<String> bookContentByLines = book.getBookContent();
+        try{
+            PrintWriter pw = new PrintWriter(new FileWriter(path));
+            for(String line : bookContentByLines)
+                pw.println(line);
+            pw.flush();
+            pw.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }
