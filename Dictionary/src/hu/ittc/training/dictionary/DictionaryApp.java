@@ -22,5 +22,7 @@ public class DictionaryApp {
 
         fileHandler.writeBookContent(translated, args[0]+"_trans");
 
+
+
     }
 }
