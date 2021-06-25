@@ -10,9 +10,13 @@ import java.util.List;
 public class ModelIOHandler {
 
     public void readDictionaryFile(Dictionary dictionary, String filePath) {
+        File dictFile = new File(filePath);
+        readDictionaryFile(dictionary, dictFile);
+    }
+
+    public void readDictionaryFile(Dictionary dictionary, File dictFile) {
         String line;
         try {
-            File dictFile = new File(filePath);
             dictionary.setName(dictFile.getName());
             FileReader file = new FileReader(dictFile);
             BufferedReader br = new BufferedReader(file);
@@ -28,10 +32,14 @@ public class ModelIOHandler {
     }
 
     public void readBookContent(Book book, String path) {
+        File bookFile = new File(path);
+        readBookContent(book, bookFile);
+    }
+
+    public void readBookContent(Book book, File bookFile) {
         List<String> bookContentByLines = new ArrayList<>();
         String line;
         try {
-            File bookFile = new File(path);
             book.setName(bookFile.getName());
             FileReader file = new FileReader(bookFile);
             BufferedReader br = new BufferedReader(file);
