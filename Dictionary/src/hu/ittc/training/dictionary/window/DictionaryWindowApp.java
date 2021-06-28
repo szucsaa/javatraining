@@ -1,6 +1,7 @@
 package hu.ittc.training.dictionary.window;
 
 import hu.ittc.training.dictionary.model.BookShelf;
+import hu.ittc.training.dictionary.window.eventlistener.ListBooksMouseEventListener;
 import hu.ittc.training.dictionary.window.eventlistener.OpenBookMouseEventListener;
 
 import javax.swing.*;
@@ -19,6 +20,9 @@ public class DictionaryWindowApp {
         file.add(openBook);
         file.add(openDictionary);
         JMenu translate =  new JMenu("Translate");
+        JMenuItem bookshelf = new JMenuItem("Bookshelf");
+        bookshelf.addMouseListener(new ListBooksMouseEventListener());
+        translate.add(bookshelf);
         jMenuBar.add(file);
         jMenuBar.add(translate);
 
@@ -26,5 +30,6 @@ public class DictionaryWindowApp {
         jFrame.setSize(1000, 500);
         jFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         jFrame.setVisible(true);
+
     }
 }
