@@ -2,7 +2,6 @@ package hu.ittc.training.dictionary.window.eventlistener;
 
 import hu.ittc.training.dictionary.ModelIOHandler;
 import hu.ittc.training.dictionary.model.Book;
-import hu.ittc.training.dictionary.model.BookShelf;
 import hu.ittc.training.dictionary.window.DictionaryWindowApp;
 
 import javax.swing.*;
