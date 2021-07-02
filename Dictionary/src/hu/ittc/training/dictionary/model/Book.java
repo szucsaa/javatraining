@@ -24,4 +24,8 @@ public class Book {
         this.name = name;
     }
 
+    public String toString(){
+        return name;
+    }
+
 }

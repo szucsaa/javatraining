@@ -1,4 +1,4 @@
-package hu.ittc.training.dictionary;
+package hu.ittc.training.dictionary.io;
 
 import hu.ittc.training.dictionary.model.Book;
 import hu.ittc.training.dictionary.model.Dictionary;

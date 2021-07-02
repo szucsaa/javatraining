@@ -11,7 +11,7 @@ public class BookShelf {
     }
 
     public List<Book> getBooks() {
-        return books;
+        return new ArrayList<>(books);
     }
 
     public void setBooks(List<Book> books) {
