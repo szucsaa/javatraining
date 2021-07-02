@@ -5,6 +5,7 @@ import hu.ittc.training.dictionary.window.event.BookShelfMouseEventListener;
 import hu.ittc.training.dictionary.window.event.OpenDocumentMouseEventListener;
 
 import javax.swing.*;
+import java.awt.*;
 
 public class DictionaryWindowApp {
 
@@ -27,8 +28,8 @@ public class DictionaryWindowApp {
         bookshelf.addMouseListener(new BookShelfMouseEventListener(jFrame));
         jMenuBar.add(file);
         jMenuBar.add(translate);
-
         jFrame.setJMenuBar(jMenuBar);
+
         jFrame.setSize(1000, 500);
         jFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         jFrame.setVisible(true);
