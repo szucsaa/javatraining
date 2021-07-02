@@ -2,9 +2,8 @@ package hu.ittc.training.dictionary.model;
 
 import java.util.List;
 
-public class Book {
+public class Book extends Document {
 
-    private String name;
 
     private List<String> bookContent;
 
@@ -14,14 +13,6 @@ public class Book {
 
     public void setBookContent(List<String> bookContent) {
         this.bookContent = bookContent;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 
     public String toString(){

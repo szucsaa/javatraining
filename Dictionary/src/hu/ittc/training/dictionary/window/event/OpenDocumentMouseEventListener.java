@@ -2,6 +2,9 @@ package hu.ittc.training.dictionary.window.event;
 
 import hu.ittc.training.dictionary.io.ModelIOHandler;
 import hu.ittc.training.dictionary.model.Book;
+import hu.ittc.training.dictionary.model.Dictionary;
+import hu.ittc.training.dictionary.model.Document;
+import hu.ittc.training.dictionary.model.Shelf;
 import hu.ittc.training.dictionary.window.DictionaryWindowApp;
 
 import javax.swing.*;
@@ -9,10 +12,17 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.io.File;
 
-public class OpenBookMouseEventListener implements MouseListener {
+public class OpenDocumentMouseEventListener implements MouseListener {
 
     private JFileChooser jFileChooser = new JFileChooser();
     private ModelIOHandler modelIOHandler = new ModelIOHandler();
+    private Shelf shelf;
+    private boolean type;
+
+    public OpenDocumentMouseEventListener(Shelf shelf, boolean type) {
+        this.shelf=shelf;
+        this.type=type;
+    }
 
     @Override
     public void mouseClicked(MouseEvent e) {
@@ -23,9 +33,15 @@ public class OpenBookMouseEventListener implements MouseListener {
     public void mousePressed(MouseEvent e) {
         jFileChooser.showOpenDialog(e.getComponent());
         File selectedFile = jFileChooser.getSelectedFile();
-        Book book = new Book();
-        modelIOHandler.readBookContent(book, selectedFile);
-        DictionaryWindowApp.bookShelf.addBook(book);
+        Document document;
+        if (this.type) {
+            document = new Book();
+            modelIOHandler.readBookContent((Book)document, selectedFile);
+        }else{
+            document=new Dictionary();
+            modelIOHandler.readDictionaryFile((Dictionary) document, selectedFile);
+        }
+        shelf.addDocument(document);
     }
 
     @Override

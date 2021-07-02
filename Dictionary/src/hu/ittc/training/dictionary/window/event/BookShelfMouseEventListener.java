@@ -1,6 +1,5 @@
 package hu.ittc.training.dictionary.window.event;
 
-import hu.ittc.training.dictionary.model.Book;
 import hu.ittc.training.dictionary.window.DictionaryWindowApp;
 
 import javax.swing.*;
@@ -26,7 +25,7 @@ public class BookShelfMouseEventListener implements MouseListener {
         JLabel label = new JLabel("Bookshelf");
         label.setBounds(0,0,100,20);
         mainFrame.getContentPane().add(label);
-        JTree booktree = new JTree(DictionaryWindowApp.bookShelf.getBooks().toArray());
+        JTree booktree = new JTree(DictionaryWindowApp.bookShelf.getDocuments().toArray());
         booktree.setBounds(0,20,500,500);
         mainFrame.getContentPane().add(booktree);
         mainFrame.repaint();
