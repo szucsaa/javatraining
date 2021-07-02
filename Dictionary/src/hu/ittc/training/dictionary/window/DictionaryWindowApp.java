@@ -16,9 +16,9 @@ public class DictionaryWindowApp {
         JMenuBar jMenuBar = new JMenuBar();
         JMenu file =  new JMenu("File");
         JMenuItem openBook = new JMenuItem("Open Book");
-        openBook.addMouseListener(new OpenDocumentMouseEventListener(bookShelf, true));
+        openBook.addMouseListener(new OpenDocumentMouseEventListener(bookShelf, OpenDocumentMouseEventListener.DocumentType.BOOK));
         JMenuItem openDictionary = new JMenuItem("Open Dictionary");
-        openDictionary.addMouseListener(new OpenDocumentMouseEventListener(dictionaryShelf, false));
+        openDictionary.addMouseListener(new OpenDocumentMouseEventListener(dictionaryShelf, OpenDocumentMouseEventListener.DocumentType.DICTIONARY));
         file.add(openBook);
         file.add(openDictionary);
         JMenu translate =  new JMenu("Translate");

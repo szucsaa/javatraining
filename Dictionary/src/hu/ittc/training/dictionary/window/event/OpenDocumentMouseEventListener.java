@@ -1,5 +1,6 @@
 package hu.ittc.training.dictionary.window.event;
 
+import hu.ittc.training.dictionary.DictionaryApp;
 import hu.ittc.training.dictionary.io.ModelIOHandler;
 import hu.ittc.training.dictionary.model.Book;
 import hu.ittc.training.dictionary.model.Dictionary;
@@ -17,9 +18,9 @@ public class OpenDocumentMouseEventListener implements MouseListener {
     private JFileChooser jFileChooser = new JFileChooser();
     private ModelIOHandler modelIOHandler = new ModelIOHandler();
     private Shelf shelf;
-    private boolean type;
+    private DocumentType type;
 
-    public OpenDocumentMouseEventListener(Shelf shelf, boolean type) {
+    public OpenDocumentMouseEventListener(Shelf shelf, DocumentType type) {
         this.shelf=shelf;
         this.type=type;
     }
@@ -34,10 +35,10 @@ public class OpenDocumentMouseEventListener implements MouseListener {
         jFileChooser.showOpenDialog(e.getComponent());
         File selectedFile = jFileChooser.getSelectedFile();
         Document document;
-        if (this.type) {
+        if (type == DocumentType.BOOK) {
             document = new Book();
             modelIOHandler.readBookContent((Book)document, selectedFile);
-        }else{
+        } else {
             document=new Dictionary();
             modelIOHandler.readDictionaryFile((Dictionary) document, selectedFile);
         }
@@ -57,5 +58,10 @@ public class OpenDocumentMouseEventListener implements MouseListener {
     @Override
     public void mouseExited(MouseEvent e) {
 
+    }
+
+    public enum DocumentType {
+        BOOK,
+        DICTIONARY
     }
 }

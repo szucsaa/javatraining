@@ -27,6 +27,7 @@ public class BookShelfMouseEventListener implements MouseListener {
         mainFrame.getContentPane().add(label);
         JTree booktree = new JTree(DictionaryWindowApp.bookShelf.getDocuments().toArray());
         booktree.setBounds(0,20,500,500);
+        booktree.addTreeSelectionListener(new BookTreeSelectionListener());
         mainFrame.getContentPane().add(booktree);
         mainFrame.repaint();
     }

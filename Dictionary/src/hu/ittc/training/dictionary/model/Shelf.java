@@ -14,4 +14,13 @@ public class Shelf {
         return new ArrayList<>(documents);
     }
 
+    public Document getDocument(String name) {
+        for (Document document : documents) {
+            if (document.getName().equals(name)) {
+                return document;
+            }
+        }
+        return null;
+    }
+
 }
