@@ -1,17 +1,16 @@
 package hu.ittc.training.dictionary.window.event;
 
-import hu.ittc.training.dictionary.window.DictionaryWindowApp;
+import hu.ittc.training.dictionary.window.MainFrame;
 
-import javax.swing.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
 public class BookShelfMouseEventListener implements MouseListener {
 
-    private JFrame mainFrame;
+    private MainFrame mainFrame;
 
-    public BookShelfMouseEventListener(JFrame jFrame) {
-        this.mainFrame = jFrame;
+    public BookShelfMouseEventListener(MainFrame mainFrame) {
+        this.mainFrame = mainFrame;
     }
 
     @Override
@@ -21,15 +20,7 @@ public class BookShelfMouseEventListener implements MouseListener {
 
     @Override
     public void mousePressed(MouseEvent e) {
-        mainFrame.getContentPane().removeAll();
-        JLabel label = new JLabel("Bookshelf");
-        label.setBounds(0,0,100,20);
-        mainFrame.getContentPane().add(label);
-        JTree booktree = new JTree(DictionaryWindowApp.bookShelf.getDocuments().toArray());
-        booktree.setBounds(0,20,500,500);
-        booktree.addTreeSelectionListener(new BookTreeSelectionListener());
-        mainFrame.getContentPane().add(booktree);
-        mainFrame.repaint();
+        mainFrame.drawBookTree();
     }
 
     @Override
