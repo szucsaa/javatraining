@@ -1,14 +1,11 @@
 package hu.ittc.training.dictionary.window.event;
 
-import hu.ittc.training.dictionary.window.MainFrame;
-
-import hu.ittc.training.dictionary.DictionaryApp;
 import hu.ittc.training.dictionary.io.ModelIOHandler;
 import hu.ittc.training.dictionary.model.Book;
 import hu.ittc.training.dictionary.model.Dictionary;
 import hu.ittc.training.dictionary.model.Document;
 import hu.ittc.training.dictionary.model.Shelf;
-import hu.ittc.training.dictionary.window.DictionaryWindowApp;
+import hu.ittc.training.dictionary.window.MainFrame;
 
 import javax.swing.*;
 import java.awt.event.MouseEvent;

@@ -1,5 +1,6 @@
 package hu.ittc.training.dictionary.window;
 
+import hu.ittc.training.dictionary.model.Book;
 import hu.ittc.training.dictionary.model.Document;
 import hu.ittc.training.dictionary.model.Shelf;
 import hu.ittc.training.dictionary.window.event.BookShelfMouseEventListener;
@@ -8,7 +9,6 @@ import hu.ittc.training.dictionary.window.event.OpenDocumentMouseEventListener;
 import hu.ittc.training.dictionary.window.event.PopupMenuMouseEventListener;
 
 import javax.swing.*;
-import java.awt.*;
 
 public class MainFrame extends JFrame {
 
@@ -64,7 +64,7 @@ public class MainFrame extends JFrame {
         JTree booktree = new JTree(bookShelf.getDocuments().toArray());
         getContentPane().add(booktree);
         booktree.setBounds(0,30,495,470);
-        booktree.addTreeSelectionListener(new BookTreeSelectionListener(this, bookShelf));
+        booktree.addTreeSelectionListener(new BookTreeSelectionListener(this));
 
         getContentPane().add(contentArea);
         contentArea.setBounds(505,30,495,470);
@@ -80,7 +80,10 @@ public class MainFrame extends JFrame {
 
     public void showContentArea(String bookName) {
         contentLabel.setText("Content of "+bookName);
+        Book chosenBook = (Book) bookShelf.getDocument(bookName);
         contentArea.setText("");
+        for(String line: chosenBook.getBookContent())
+            contentArea.append(line);
         contentArea.setVisible(true);
         repaint();
     }
@@ -100,7 +103,4 @@ public class MainFrame extends JFrame {
         popupMenu.setVisible(true);
     }
 
-    public void appendContentLine(String line) {
-        contentArea.append(line+"\n");
-    }
 }
