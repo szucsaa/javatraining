@@ -48,7 +48,7 @@ public class OpenDocumentMouseEventListener implements MouseListener {
         }
         shelf.addDocument(document);
 
-        mainFrame.drawBookTree();
+        mainFrame.drawBookTree(true);
     }
 
     @Override

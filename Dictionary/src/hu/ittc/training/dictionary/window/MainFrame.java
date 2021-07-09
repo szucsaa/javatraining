@@ -8,9 +8,7 @@ import hu.ittc.training.dictionary.window.event.OpenDocumentMouseEventListener;
 import hu.ittc.training.dictionary.window.event.PopupMenuMouseEventListener;
 
 import javax.swing.*;
-import javax.swing.event.PopupMenuEvent;
-import javax.swing.event.PopupMenuListener;
-import java.awt.event.MouseAdapter;
+import java.awt.*;
 
 public class MainFrame extends JFrame {
 
@@ -18,7 +16,8 @@ public class MainFrame extends JFrame {
     private Shelf dictionaryShelf;
 
     private JTextArea contentArea = new JTextArea();
-    private JLabel contentLabel = new JLabel("Content");
+    private JLabel contentLabel = new JLabel();
+    private boolean treeVisible = false;
 
     public MainFrame(Shelf bookShelf, Shelf dictionaryShelf) {
         this.bookShelf = bookShelf;
@@ -48,34 +47,39 @@ public class MainFrame extends JFrame {
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setVisible(true);
 
+        getContentPane().setLayout(null);
     }
 
-    public void drawBookTree() {
+    public void drawBookTree(boolean refresh) {
+        if (refresh && !treeVisible)
+            return;
+        treeVisible = true;
+
         getContentPane().removeAll();
 
         JLabel label = new JLabel("Bookshelf");
-        label.setBounds(0,0,100,20);
         getContentPane().add(label);
+        label.setBounds(0,0,495,30);
 
         JTree booktree = new JTree(bookShelf.getDocuments().toArray());
-        booktree.setBounds(0,20,500,500);
-        booktree.addTreeSelectionListener(new BookTreeSelectionListener(this, bookShelf));
         getContentPane().add(booktree);
+        booktree.setBounds(0,30,495,470);
+        booktree.addTreeSelectionListener(new BookTreeSelectionListener(this, bookShelf));
 
-        contentArea.setBounds(510,20,490,500);
-        contentArea.setVisible(false);
         getContentPane().add(contentArea);
+        contentArea.setBounds(505,30,495,470);
+        contentArea.setVisible(false);
 
-        contentLabel.setBounds(510,0,100,20);
-        contentLabel.setVisible(true);
         getContentPane().add(contentLabel);
+        contentLabel.setText("Content");
+        contentLabel.setBounds(505,0,495,30);
+        contentLabel.setVisible(true);
 
         repaint();
     }
 
     public void showContentArea(String bookName) {
-        contentLabel.setName("Content of "+bookName);
-        contentLabel.setVisible(true);
+        contentLabel.setText("Content of "+bookName);
         contentArea.setText("");
         contentArea.setVisible(true);
         repaint();

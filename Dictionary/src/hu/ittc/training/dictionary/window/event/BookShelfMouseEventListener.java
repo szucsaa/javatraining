@@ -20,7 +20,7 @@ public class BookShelfMouseEventListener implements MouseListener {
 
     @Override
     public void mousePressed(MouseEvent e) {
-        mainFrame.drawBookTree();
+        mainFrame.drawBookTree(false);
     }
 
     @Override
