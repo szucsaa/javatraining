@@ -22,6 +22,7 @@ public class BookTreeSelectionListener implements TreeSelectionListener {
 
         Book chosenBook = (Book) bookShelf.getDocument(e.getPath().getLastPathComponent().toString());
 
+
         mainFrame.showContentArea(chosenBook.getName());
 
         for(String line: chosenBook.getBookContent())

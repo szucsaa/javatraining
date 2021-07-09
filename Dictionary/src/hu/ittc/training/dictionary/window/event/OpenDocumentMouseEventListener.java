@@ -1,5 +1,7 @@
 package hu.ittc.training.dictionary.window.event;
 
+import hu.ittc.training.dictionary.window.MainFrame;
+
 import hu.ittc.training.dictionary.DictionaryApp;
 import hu.ittc.training.dictionary.io.ModelIOHandler;
 import hu.ittc.training.dictionary.model.Book;
@@ -19,10 +21,12 @@ public class OpenDocumentMouseEventListener implements MouseListener {
     private ModelIOHandler modelIOHandler = new ModelIOHandler();
     private Shelf shelf;
     private DocumentType type;
+    private MainFrame mainFrame;
 
-    public OpenDocumentMouseEventListener(Shelf shelf, DocumentType type) {
+    public OpenDocumentMouseEventListener(Shelf shelf, DocumentType type, MainFrame mainFrame) {
         this.shelf=shelf;
         this.type=type;
+        this.mainFrame = mainFrame;
     }
 
     @Override
@@ -43,6 +47,8 @@ public class OpenDocumentMouseEventListener implements MouseListener {
             modelIOHandler.readDictionaryFile((Dictionary) document, selectedFile);
         }
         shelf.addDocument(document);
+
+        mainFrame.drawBookTree();
     }
 
     @Override

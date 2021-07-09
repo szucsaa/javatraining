@@ -5,8 +5,12 @@ import hu.ittc.training.dictionary.model.Shelf;
 import hu.ittc.training.dictionary.window.event.BookShelfMouseEventListener;
 import hu.ittc.training.dictionary.window.event.BookTreeSelectionListener;
 import hu.ittc.training.dictionary.window.event.OpenDocumentMouseEventListener;
+import hu.ittc.training.dictionary.window.event.PopupMenuMouseEventListener;
 
 import javax.swing.*;
+import javax.swing.event.PopupMenuEvent;
+import javax.swing.event.PopupMenuListener;
+import java.awt.event.MouseAdapter;
 
 public class MainFrame extends JFrame {
 
@@ -27,9 +31,9 @@ public class MainFrame extends JFrame {
         JMenuBar jMenuBar = new JMenuBar();
         JMenu file =  new JMenu("File");
         JMenuItem openBook = new JMenuItem("Open Book");
-        openBook.addMouseListener(new OpenDocumentMouseEventListener(bookShelf, OpenDocumentMouseEventListener.DocumentType.BOOK));
+        openBook.addMouseListener(new OpenDocumentMouseEventListener(bookShelf, OpenDocumentMouseEventListener.DocumentType.BOOK, this));
         JMenuItem openDictionary = new JMenuItem("Open Dictionary");
-        openDictionary.addMouseListener(new OpenDocumentMouseEventListener(dictionaryShelf, OpenDocumentMouseEventListener.DocumentType.DICTIONARY));
+        openDictionary.addMouseListener(new OpenDocumentMouseEventListener(dictionaryShelf, OpenDocumentMouseEventListener.DocumentType.DICTIONARY, this));
         file.add(openBook);
         file.add(openDictionary);
         JMenu translate =  new JMenu("Translate");
@@ -78,9 +82,14 @@ public class MainFrame extends JFrame {
     }
 
     public void drawPopup(Object source) {
+
         JPopupMenu popupMenu = new JPopupMenu();
+
         for (Document dictionary : dictionaryShelf.getDocuments()) {
+
             JMenuItem newJMenuItem = new JMenuItem(dictionary.getName());
+            newJMenuItem.addMouseListener(new PopupMenuMouseEventListener());
+
             popupMenu.add(newJMenuItem);
         }
         popupMenu.show((JTree) source, 50, 0);
