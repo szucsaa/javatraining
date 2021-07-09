@@ -1,5 +1,7 @@
 package hu.ittc.training.dictionary.window;
 
+import hu.ittc.training.dictionary.model.Book;
+import hu.ittc.training.dictionary.model.Dictionary;
 import hu.ittc.training.dictionary.model.Document;
 import hu.ittc.training.dictionary.model.Shelf;
 import hu.ittc.training.dictionary.window.event.BookShelfMouseEventListener;
@@ -8,9 +10,6 @@ import hu.ittc.training.dictionary.window.event.OpenDocumentMouseEventListener;
 import hu.ittc.training.dictionary.window.event.PopupMenuMouseEventListener;
 
 import javax.swing.*;
-import javax.swing.event.PopupMenuEvent;
-import javax.swing.event.PopupMenuListener;
-import java.awt.event.MouseAdapter;
 
 public class MainFrame extends JFrame {
 
@@ -73,6 +72,14 @@ public class MainFrame extends JFrame {
         repaint();
     }
 
+    public void showBook(Book book) {
+        contentLabel.setName("Translated book");
+        contentLabel.setVisible(true);
+        contentArea.setText("");
+        contentArea.setVisible(true);
+        repaint();
+    }
+
     public void showContentArea(String bookName) {
         contentLabel.setName("Content of "+bookName);
         contentLabel.setVisible(true);
@@ -81,22 +88,23 @@ public class MainFrame extends JFrame {
         repaint();
     }
 
-    public void drawPopup(Object source) {
+    public void drawPopup(Object source, Book book) {
 
         JPopupMenu popupMenu = new JPopupMenu();
 
         for (Document dictionary : dictionaryShelf.getDocuments()) {
 
             JMenuItem newJMenuItem = new JMenuItem(dictionary.getName());
-            newJMenuItem.addMouseListener(new PopupMenuMouseEventListener());
+            newJMenuItem.addMouseListener(new PopupMenuMouseEventListener(book, (Dictionary) dictionary, this));
 
             popupMenu.add(newJMenuItem);
         }
-        popupMenu.show((JTree) source, 50, 0);
+        popupMenu.show((JTree) source, 100, 0);
         popupMenu.setVisible(true);
     }
 
     public void appendContentLine(String line) {
+
         contentArea.append(line+"\n");
     }
 }
