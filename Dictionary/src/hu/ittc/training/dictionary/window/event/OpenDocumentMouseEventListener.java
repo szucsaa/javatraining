@@ -33,17 +33,23 @@ public class OpenDocumentMouseEventListener implements MouseListener {
 
     @Override
     public void mousePressed(MouseEvent e) {
-        jFileChooser.showOpenDialog(e.getComponent());
+        if (jFileChooser.showOpenDialog(e.getComponent()) == JFileChooser.CANCEL_OPTION) {
+            return;
+        }
         File selectedFile = jFileChooser.getSelectedFile();
         Document document;
         if (type == DocumentType.BOOK) {
             document = new Book();
             modelIOHandler.readBookContent((Book)document, selectedFile);
         } else {
-            document=new Dictionary();
+            document = new Dictionary();
             modelIOHandler.readDictionaryFile((Dictionary) document, selectedFile);
         }
-        shelf.addDocument(document);
+
+        boolean success = shelf.addDocument(document);
+
+        JOptionPane.showMessageDialog(null, success ? "Document " + document.getName() + " was added!" : "A document with this name already exist!");
+
 
         mainFrame.drawBookTree(true);
     }

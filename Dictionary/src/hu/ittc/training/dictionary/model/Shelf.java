@@ -6,8 +6,14 @@ import java.util.List;
 public class Shelf {
     private List<Document> documents =  new ArrayList<>();
 
-    public void addDocument(Document document) {
+    public boolean addDocument(Document document) {
+        for (Document doc: documents) {
+            if (doc.getName().equals(document.getName())) {
+                return false;
+            }
+        }
         documents.add(document);
+        return true;
     }
 
     public List<Document> getDocuments() {

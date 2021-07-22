@@ -1,6 +1,7 @@
 package hu.ittc.training.dictionary.window;
 
 import hu.ittc.training.dictionary.model.Book;
+import hu.ittc.training.dictionary.model.Dictionary;
 import hu.ittc.training.dictionary.model.Document;
 import hu.ittc.training.dictionary.model.Shelf;
 import hu.ittc.training.dictionary.window.event.BookShelfMouseEventListener;
@@ -78,24 +79,29 @@ public class MainFrame extends JFrame {
         repaint();
     }
 
-    public void showContentArea(String bookName) {
-        contentLabel.setText("Content of "+bookName);
+    public Book searchBook(String bookName) {
         Book chosenBook = (Book) bookShelf.getDocument(bookName);
+        showContentArea(chosenBook);
+        return chosenBook;
+    }
+
+    public void showContentArea(Book book) {
+        contentLabel.setText("Content of "+ book.getName());
         contentArea.setText("");
-        for(String line: chosenBook.getBookContent())
+        for(String line: book.getBookContent())
             contentArea.append(line);
         contentArea.setVisible(true);
         repaint();
     }
 
-    public void drawPopup(Object source) {
+    public void drawPopup(Object source, Book book) {
 
         JPopupMenu popupMenu = new JPopupMenu();
 
         for (Document dictionary : dictionaryShelf.getDocuments()) {
 
             JMenuItem newJMenuItem = new JMenuItem(dictionary.getName());
-            newJMenuItem.addMouseListener(new PopupMenuMouseEventListener());
+            newJMenuItem.addMouseListener(new PopupMenuMouseEventListener((Dictionary) dictionary, book, this));
 
             popupMenu.add(newJMenuItem);
         }

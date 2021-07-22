@@ -1,5 +1,6 @@
 package hu.ittc.training.dictionary.window.event;
 
+import hu.ittc.training.dictionary.model.Book;
 import hu.ittc.training.dictionary.window.MainFrame;
 
 import javax.swing.event.TreeSelectionEvent;
@@ -15,8 +16,8 @@ public class BookTreeSelectionListener implements TreeSelectionListener {
 
     @Override
     public void valueChanged(TreeSelectionEvent e) {
-        mainFrame.showContentArea(e.getPath().getLastPathComponent().toString());
-        mainFrame.drawPopup(e.getSource());
+        Book book = mainFrame.searchBook(e.getPath().getLastPathComponent().toString());
+        mainFrame.drawPopup(e.getSource(), book);
     }
 
 }
