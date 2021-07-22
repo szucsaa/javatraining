@@ -28,6 +28,7 @@ public class MainFrame extends JFrame {
     }
 
     private void drawFrame() {
+        this.setTitle("Translator Application");
         JMenuBar jMenuBar = new JMenuBar();
         JMenu file =  new JMenu("File");
         JMenuItem openBook = new JMenuItem("Open Book");
@@ -89,7 +90,7 @@ public class MainFrame extends JFrame {
         contentLabel.setText("Content of "+ book.getName());
         contentArea.setText("");
         for(String line: book.getBookContent())
-            contentArea.append(line);
+            contentArea.append(line+"\n");
         contentArea.setVisible(true);
         repaint();
     }
