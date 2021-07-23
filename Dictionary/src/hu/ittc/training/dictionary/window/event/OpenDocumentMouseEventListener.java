@@ -51,7 +51,7 @@ public class OpenDocumentMouseEventListener implements MouseListener {
         JOptionPane.showMessageDialog(null, success ? "Document " + document.getName() + " was added!" : "A document with this name already exist!");
 
 
-        mainFrame.drawBookTree();
+        mainFrame.drawBookTree(true);
     }
 
     @Override

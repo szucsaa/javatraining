@@ -18,6 +18,7 @@ public class ModelIOHandler {
         String line;
         try {
             dictionary.setName(dictFile.getName());
+            dictionary.setPath(dictFile.getPath());
             FileReader file = new FileReader(dictFile);
             BufferedReader br = new BufferedReader(file);
 
@@ -41,6 +42,7 @@ public class ModelIOHandler {
         String line;
         try {
             book.setName(bookFile.getName());
+            book.setPath(bookFile.getPath());
             FileReader file = new FileReader(bookFile);
             BufferedReader br = new BufferedReader(file);
             while ((line = br.readLine()) != null) {

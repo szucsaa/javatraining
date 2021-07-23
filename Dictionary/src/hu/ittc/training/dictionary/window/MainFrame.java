@@ -4,10 +4,7 @@ import hu.ittc.training.dictionary.model.Book;
 import hu.ittc.training.dictionary.model.Dictionary;
 import hu.ittc.training.dictionary.model.Document;
 import hu.ittc.training.dictionary.model.Shelf;
-import hu.ittc.training.dictionary.window.event.BookShelfMouseEventListener;
-import hu.ittc.training.dictionary.window.event.BookTreeSelectionListener;
-import hu.ittc.training.dictionary.window.event.OpenDocumentMouseEventListener;
-import hu.ittc.training.dictionary.window.event.PopupMenuMouseEventListener;
+import hu.ittc.training.dictionary.window.event.*;
 
 import javax.swing.*;
 
@@ -35,8 +32,11 @@ public class MainFrame extends JFrame {
         openBook.addMouseListener(new OpenDocumentMouseEventListener(bookShelf, OpenDocumentMouseEventListener.DocumentType.BOOK, this));
         JMenuItem openDictionary = new JMenuItem("Open Dictionary");
         openDictionary.addMouseListener(new OpenDocumentMouseEventListener(dictionaryShelf, OpenDocumentMouseEventListener.DocumentType.DICTIONARY, this));
+        JMenuItem saveDictionaries = new JMenuItem("Save Dictionaries");
+        saveDictionaries.addMouseListener(new SaveDictionariesMouseEventListener(dictionaryShelf));
         file.add(openBook);
         file.add(openDictionary);
+        file.add(saveDictionaries);
         JMenu translate =  new JMenu("Translate");
         JMenuItem bookshelf = new JMenuItem("Bookshelf");
         translate.add(bookshelf);
