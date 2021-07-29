@@ -32,7 +32,10 @@ public class PopupMenuMouseEventListener implements MouseListener {
     @Override
     public void mousePressed(MouseEvent e) {
         Book translatedBook = new Book();
-        translatedBook.setName(book.getName() + " translated by " + dictionary.getName());
+        String newName = book.getName() + " translated by " + dictionary.getName();
+        translatedBook.setName(newName);
+        String newPath = book.getPath().replace(book.getName(), newName);
+        translatedBook.setPath(newPath);
         translator.translate(book, translatedBook);
         mainFrame.showContentArea(translatedBook);
     }
