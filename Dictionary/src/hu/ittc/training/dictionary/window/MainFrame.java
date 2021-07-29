@@ -1,5 +1,6 @@
 package hu.ittc.training.dictionary.window;
 
+import hu.ittc.training.dictionary.io.ModelIOHandler;
 import hu.ittc.training.dictionary.model.Book;
 import hu.ittc.training.dictionary.model.Dictionary;
 import hu.ittc.training.dictionary.model.Document;
@@ -7,14 +8,21 @@ import hu.ittc.training.dictionary.model.Shelf;
 import hu.ittc.training.dictionary.window.event.*;
 
 import javax.swing.*;
+import javax.swing.plaf.IconUIResource;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.File;
 
 public class MainFrame extends JFrame {
 
     private Shelf bookShelf;
     private Shelf dictionaryShelf;
 
+    private ModelIOHandler modelIOHandler = new ModelIOHandler();
+
     private JTextArea contentArea = new JTextArea();
     private JLabel contentLabel = new JLabel();
+    private JButton saveIcon = new JButton();
     private boolean treeVisible = false;
 
     public MainFrame(Shelf bookShelf, Shelf dictionaryShelf) {
@@ -78,6 +86,13 @@ public class MainFrame extends JFrame {
         contentLabel.setBounds(505,0,495,30);
         contentLabel.setVisible(true);
 
+        getContentPane().add(saveIcon);
+        saveIcon.setIcon(UIManager.getIcon("FileView.floppyDriveIcon"));
+//        File file = new File(getClass().getClassLoader().getResource("save1600.png").getFile());
+//        saveIcon.setIcon(new ImageIcon(file.getAbsolutePath()));
+        saveIcon.setBounds(950,0,30,30);
+        saveIcon.setVisible(false);
+
         repaint();
     }
 
@@ -93,6 +108,14 @@ public class MainFrame extends JFrame {
         for(String line: book.getBookContent())
             contentArea.append(line+"\n");
         contentArea.setVisible(true);
+        saveIcon.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                modelIOHandler.writeBookContent(book);
+                JOptionPane.showMessageDialog(null,"Book saved!");
+            }
+        });
+        saveIcon.setVisible(true);
         repaint();
     }
 

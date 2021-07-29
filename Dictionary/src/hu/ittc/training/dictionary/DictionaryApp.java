@@ -20,10 +20,8 @@ public class DictionaryApp {
         Book translated = new Book();
         Translator translator = new Translator(englishDictionary);
         translator.translate(book, translated);
+        translated.setPath(args[0]+"_trans");
 
-        fileHandler.writeBookContent(translated, args[0]+"_trans");
-
-
-
+        fileHandler.writeBookContent(translated);
     }
 }

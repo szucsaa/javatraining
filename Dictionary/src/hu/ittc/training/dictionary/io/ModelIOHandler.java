@@ -55,10 +55,10 @@ public class ModelIOHandler {
         }
     }
 
-    public void writeBookContent(Book book, String path){
+    public void writeBookContent(Book book){
         List<String> bookContentByLines = book.getBookContent();
         try{
-            PrintWriter pw = new PrintWriter(new FileWriter(path));
+            PrintWriter pw = new PrintWriter(new FileWriter(book.getPath()));
             for(String line : bookContentByLines)
                 pw.println(line);
             pw.flush();
