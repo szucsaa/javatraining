@@ -1,5 +1,7 @@
 package hu.ittc.training.dictionary.model;
 
+import hu.ittc.training.dictionary.window.TranslateDialog;
+
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -19,9 +21,9 @@ public class Translator {
             for (int i = 0; i < words.length; i++) {
                 String trans = dictionary.getTranslation(words[i]);
                 if (trans == null) {
-                    Scanner scanner = new Scanner(System.in);
-                    System.out.println("Please type the english equivalent of " + words[i]);
-                    trans = scanner.nextLine();
+                    TranslateDialog tdialog = new TranslateDialog(words[i]);
+                    tdialog.setVisible(true);
+                    trans = tdialog.getTranslatedWord();
                     dictionary.addWordPair(words[i], trans);
                 }
                 sb.append((i==0?"":" ")+trans);

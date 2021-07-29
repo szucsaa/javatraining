@@ -1,4 +1,4 @@
-package hu.ittc.training.dictionary;
+package hu.ittc.training.dictionary.io;
 
 import hu.ittc.training.dictionary.model.Book;
 import hu.ittc.training.dictionary.model.Dictionary;
@@ -18,6 +18,7 @@ public class ModelIOHandler {
         String line;
         try {
             dictionary.setName(dictFile.getName());
+            dictionary.setPath(dictFile.getPath());
             FileReader file = new FileReader(dictFile);
             BufferedReader br = new BufferedReader(file);
 
@@ -41,6 +42,7 @@ public class ModelIOHandler {
         String line;
         try {
             book.setName(bookFile.getName());
+            book.setPath(bookFile.getPath());
             FileReader file = new FileReader(bookFile);
             BufferedReader br = new BufferedReader(file);
             while ((line = br.readLine()) != null) {
@@ -61,6 +63,18 @@ public class ModelIOHandler {
                 pw.println(line);
             pw.flush();
             pw.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    public void writeDictionary(Dictionary dictionary) {
+        File file=new File(dictionary.getPath());
+        try(BufferedWriter bw=new BufferedWriter(new FileWriter(file))){
+            for (String key:dictionary.getWordPairs().keySet()) {
+                bw.write(key+":"+dictionary.getWordPairs().get(key)+"\n");
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }

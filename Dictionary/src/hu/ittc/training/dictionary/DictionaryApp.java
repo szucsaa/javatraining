@@ -1,5 +1,6 @@
 package hu.ittc.training.dictionary;
 
+import hu.ittc.training.dictionary.io.ModelIOHandler;
 import hu.ittc.training.dictionary.model.Book;
 import hu.ittc.training.dictionary.model.Dictionary;
 import hu.ittc.training.dictionary.model.Translator;
