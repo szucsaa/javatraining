@@ -23,14 +23,4 @@ public class Dictionary extends Document {
         return wordpairs.get(word);
     }
 
-    public void saveDictionary() {
-        File file=new File(this.path);
-        try(BufferedWriter bw=new BufferedWriter(new FileWriter(file))){
-            for (String key:wordpairs.keySet()) {
-                bw.write(key+":"+wordpairs.get(key)+"\n");
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
 }

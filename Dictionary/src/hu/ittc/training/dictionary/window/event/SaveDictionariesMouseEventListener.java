@@ -1,5 +1,6 @@
 package hu.ittc.training.dictionary.window.event;
 
+import hu.ittc.training.dictionary.io.ModelIOHandler;
 import hu.ittc.training.dictionary.model.Dictionary;
 import hu.ittc.training.dictionary.model.Document;
 import hu.ittc.training.dictionary.model.Shelf;
@@ -9,6 +10,8 @@ import java.awt.event.MouseListener;
 
 public class SaveDictionariesMouseEventListener implements MouseListener {
     private Shelf dictionaryShelf;
+    private ModelIOHandler modelIOHandler = new ModelIOHandler();
+
     public SaveDictionariesMouseEventListener(Shelf dictionaryShelf) {
         this.dictionaryShelf=dictionaryShelf;
     }
@@ -20,7 +23,8 @@ public class SaveDictionariesMouseEventListener implements MouseListener {
 
     @Override
     public void mousePressed(MouseEvent e) {
-        dictionaryShelf.getDocuments().forEach((Document dict)->((Dictionary)dict).saveDictionary());
+        for (Document dictionary: dictionaryShelf.getDocuments())
+            modelIOHandler.writeDictionary((Dictionary)dictionary);
     }
 
     @Override

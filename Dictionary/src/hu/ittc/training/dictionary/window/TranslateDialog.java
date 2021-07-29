@@ -31,6 +31,8 @@ public class TranslateDialog extends JDialog {
         this.getRootPane().setDefaultButton(button);
         button.requestFocus();
         button.setBounds(80,60,60,40);
+
+        this.setLocationRelativeTo(null);
     }
 
     public String getTranslatedWord() {

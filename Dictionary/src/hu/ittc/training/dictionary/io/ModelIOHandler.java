@@ -67,4 +67,16 @@ public class ModelIOHandler {
             e.printStackTrace();
         }
     }
+
+
+    public void writeDictionary(Dictionary dictionary) {
+        File file=new File(dictionary.getPath());
+        try(BufferedWriter bw=new BufferedWriter(new FileWriter(file))){
+            for (String key:dictionary.getWordPairs().keySet()) {
+                bw.write(key+":"+dictionary.getWordPairs().get(key)+"\n");
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 }
