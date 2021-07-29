@@ -108,6 +108,8 @@ public class MainFrame extends JFrame {
         for(String line: book.getBookContent())
             contentArea.append(line+"\n");
         contentArea.setVisible(true);
+        for(ActionListener al: saveIcon.getActionListeners())
+            saveIcon.removeActionListener(al);
         saveIcon.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
