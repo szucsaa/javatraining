@@ -8,8 +8,10 @@ import hu.ittc.training.dictionary.model.Shelf;
 import hu.ittc.training.dictionary.window.event.*;
 
 import javax.swing.*;
+import javax.swing.plaf.IconUIResource;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
 
 public class MainFrame extends JFrame {
 
@@ -85,7 +87,9 @@ public class MainFrame extends JFrame {
         contentLabel.setVisible(true);
 
         getContentPane().add(saveIcon);
-        saveIcon.setText("Icon");
+        saveIcon.setIcon(UIManager.getIcon("FileView.floppyDriveIcon"));
+//        File file = new File(getClass().getClassLoader().getResource("save1600.png").getFile());
+//        saveIcon.setIcon(new ImageIcon(file.getAbsolutePath()));
         saveIcon.setBounds(950,0,30,30);
         saveIcon.setVisible(false);
 
@@ -108,6 +112,7 @@ public class MainFrame extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 modelIOHandler.writeBookContent(book);
+                JOptionPane.showMessageDialog(null,"Book saved!");
             }
         });
         saveIcon.setVisible(true);
