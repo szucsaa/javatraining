@@ -8,10 +8,8 @@ import hu.ittc.training.dictionary.model.Shelf;
 import hu.ittc.training.dictionary.window.event.*;
 
 import javax.swing.*;
-import javax.swing.plaf.IconUIResource;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.File;
 
 public class MainFrame extends JFrame {
 
@@ -75,7 +73,7 @@ public class MainFrame extends JFrame {
         JTree booktree = new JTree(bookShelf.getDocuments().toArray());
         getContentPane().add(booktree);
         booktree.setBounds(0,30,495,470);
-        booktree.addTreeSelectionListener(new BookTreeSelectionListener(this));
+        booktree.addMouseListener(new BookMouseListener(booktree,this));
 
         getContentPane().add(contentArea);
         contentArea.setBounds(505,30,495,470);
@@ -110,6 +108,7 @@ public class MainFrame extends JFrame {
         contentArea.setVisible(true);
         for(ActionListener al: saveIcon.getActionListeners())
             saveIcon.removeActionListener(al);
+
         saveIcon.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -117,6 +116,14 @@ public class MainFrame extends JFrame {
                 JOptionPane.showMessageDialog(null,"Book saved!");
             }
         });
+
+        /* with lambda :)
+        saveIcon.addActionListener(e -> {
+            modelIOHandler.writeBookContent(book);
+            JOptionPane.showMessageDialog(null,"Book saved!");
+        });
+         */
+
         saveIcon.setVisible(true);
         repaint();
     }
