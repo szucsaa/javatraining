@@ -51,6 +51,7 @@ public class MainFrame extends JFrame {
         jMenuBar.add(file);
         jMenuBar.add(translate);
 
+
         this.setJMenuBar(jMenuBar);
         this.setSize(1000, 500);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -59,6 +60,8 @@ public class MainFrame extends JFrame {
 
         this.setLocationRelativeTo(null);
         getContentPane().setLayout(null);
+
+        contentArea.addKeyListener(new TextChangeEventListener(saveIcon));
     }
 
     public void drawBookTree(boolean refresh) {
@@ -98,11 +101,11 @@ public class MainFrame extends JFrame {
 
     public Book pickBook(String bookName) {
         Book chosenBook = (Book) bookShelf.getDocument(bookName);
-        showContentArea(chosenBook);
+        showContentArea(chosenBook, false);
         return chosenBook;
     }
 
-    public void showContentArea(Book book) {
+    public void showContentArea(Book book, boolean saveEnabled) {
         contentLabel.setText("Content of "+ book.getName());
         contentArea.setText("");
         for(String line: book.getBookContent())
@@ -117,6 +120,7 @@ public class MainFrame extends JFrame {
                 book.setBookContent(Arrays.asList(contentArea.getText().split("\n")));
                 modelIOHandler.writeBookContent(book);
                 JOptionPane.showMessageDialog(null,"Book saved!");
+                saveIcon.setEnabled(false);
             }
         });
 
@@ -128,6 +132,7 @@ public class MainFrame extends JFrame {
          */
 
         saveIcon.setVisible(true);
+        saveIcon.setEnabled(saveEnabled);
         repaint();
     }
 
