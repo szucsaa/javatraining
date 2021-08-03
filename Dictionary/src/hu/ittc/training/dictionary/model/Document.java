@@ -1,6 +1,13 @@
 package hu.ittc.training.dictionary.model;
 
-public class Document {
+import java.util.List;
+
+public abstract class Document {
+    public enum DocumentType {
+        BOOK,
+        DICTIONARY
+    }
+
     protected String name;
     protected String path;
 
@@ -17,4 +24,7 @@ public class Document {
     public void setPath(String path) {
         this.path = path;
     }
+
+    public abstract List<String> getContentAsList();
+    public abstract void setContentAsList(List<String> content);
 }

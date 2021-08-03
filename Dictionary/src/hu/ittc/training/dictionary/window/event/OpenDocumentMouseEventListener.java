@@ -17,10 +17,10 @@ public class OpenDocumentMouseEventListener implements MouseListener {
     private JFileChooser jFileChooser = new JFileChooser();
     private ModelIOHandler modelIOHandler = new ModelIOHandler();
     private Shelf shelf;
-    private DocumentType type;
+    private Document.DocumentType type;
     private MainFrame mainFrame;
 
-    public OpenDocumentMouseEventListener(Shelf shelf, DocumentType type, MainFrame mainFrame) {
+    public OpenDocumentMouseEventListener(Shelf shelf, Document.DocumentType type, MainFrame mainFrame) {
         this.shelf=shelf;
         this.type=type;
         this.mainFrame = mainFrame;
@@ -37,11 +37,12 @@ public class OpenDocumentMouseEventListener implements MouseListener {
             return;
         }
         File selectedFile = jFileChooser.getSelectedFile();
-        Document document;
-        if (type == DocumentType.BOOK) {
+        Document document = null;
+        if (type == Document.DocumentType.BOOK) {
             document = new Book();
             modelIOHandler.readBookContent((Book)document, selectedFile);
-        } else {
+        }
+        if (type == Document.DocumentType.DICTIONARY) {
             document = new Dictionary();
             modelIOHandler.readDictionaryFile((Dictionary) document, selectedFile);
         }
@@ -51,7 +52,7 @@ public class OpenDocumentMouseEventListener implements MouseListener {
         JOptionPane.showMessageDialog(null, success ? "Document " + document.getName() + " was added!" : "A document with this name already exist!");
 
 
-        mainFrame.drawBookTree(true);
+        mainFrame.drawBookTree(type,true);
     }
 
     @Override
@@ -69,8 +70,4 @@ public class OpenDocumentMouseEventListener implements MouseListener {
 
     }
 
-    public enum DocumentType {
-        BOOK,
-        DICTIONARY
-    }
 }

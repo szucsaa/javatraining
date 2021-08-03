@@ -36,9 +36,9 @@ public class MainFrame extends JFrame {
         JMenuBar jMenuBar = new JMenuBar();
         JMenu file =  new JMenu("File");
         JMenuItem openBook = new JMenuItem("Open Book");
-        openBook.addMouseListener(new OpenDocumentMouseEventListener(bookShelf, OpenDocumentMouseEventListener.DocumentType.BOOK, this));
+        openBook.addMouseListener(new OpenDocumentMouseEventListener(bookShelf, Document.DocumentType.BOOK, this));
         JMenuItem openDictionary = new JMenuItem("Open Dictionary");
-        openDictionary.addMouseListener(new OpenDocumentMouseEventListener(dictionaryShelf, OpenDocumentMouseEventListener.DocumentType.DICTIONARY, this));
+        openDictionary.addMouseListener(new OpenDocumentMouseEventListener(dictionaryShelf, Document.DocumentType.DICTIONARY, this));
         JMenuItem saveDictionaries = new JMenuItem("Save Dictionaries");
         saveDictionaries.addMouseListener(new SaveDictionariesMouseEventListener(dictionaryShelf));
         file.add(openBook);
@@ -47,11 +47,12 @@ public class MainFrame extends JFrame {
         JMenu translate =  new JMenu("Translate");
         JMenuItem bookshelf = new JMenuItem("Bookshelf");
         translate.add(bookshelf);
-        bookshelf.addMouseListener(new BookShelfMouseEventListener(this));
+        bookshelf.addMouseListener(new ShelfMouseEventListener(this, Document.DocumentType.BOOK));
+        JMenuItem dictshelf = new JMenuItem("Dict.shelf");
+        translate.add(dictshelf);
+        dictshelf.addMouseListener(new ShelfMouseEventListener(this, Document.DocumentType.DICTIONARY));
         jMenuBar.add(file);
         jMenuBar.add(translate);
-
-
         this.setJMenuBar(jMenuBar);
         this.setSize(1000, 500);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -64,21 +65,21 @@ public class MainFrame extends JFrame {
         contentArea.addKeyListener(new TextChangeEventListener(saveIcon));
     }
 
-    public void drawBookTree(boolean refresh) {
+    public void drawBookTree(Document.DocumentType documentType, boolean refresh) {
         if (refresh && !treeVisible)
             return;
         treeVisible = true;
 
         getContentPane().removeAll();
 
-        JLabel label = new JLabel("Bookshelf");
+        JLabel label = new JLabel((documentType == Document.DocumentType.BOOK?"Book":"Dictionary")+"shelf");
         getContentPane().add(label);
         label.setBounds(0,0,495,30);
 
-        JTree booktree = new JTree(bookShelf.getDocuments().toArray());
-        getContentPane().add(booktree);
-        booktree.setBounds(0,30,495,470);
-        booktree.addMouseListener(new BookMouseListener(booktree,this));
+        JTree docTree = new JTree((documentType == Document.DocumentType.BOOK?bookShelf:dictionaryShelf).getDocuments().toArray());
+        getContentPane().add(docTree);
+        docTree.setBounds(0,30,495,470);
+        docTree.addMouseListener(new DocMouseListener(docTree,this,documentType));
 
         getContentPane().add(contentArea);
         contentArea.setBounds(505,30,495,470);
@@ -99,16 +100,16 @@ public class MainFrame extends JFrame {
         repaint();
     }
 
-    public Book pickBook(String bookName) {
-        Book chosenBook = (Book) bookShelf.getDocument(bookName);
-        showContentArea(chosenBook, false);
-        return chosenBook;
+    public Document pickDoc(String docName, Document.DocumentType docType) {
+        Document chosenDoc = ((docType == Document.DocumentType.BOOK)?bookShelf:dictionaryShelf).getDocument(docName);
+        showContentArea(chosenDoc, false);
+        return chosenDoc;
     }
 
-    public void showContentArea(Book book, boolean saveEnabled) {
-        contentLabel.setText("Content of "+ book.getName());
+    public void showContentArea(Document doc, boolean saveEnabled) {
+        contentLabel.setText("Content of "+ doc.getName());
         contentArea.setText("");
-        for(String line: book.getBookContent())
+        for(String line: doc.getContentAsList())
             contentArea.append(line+"\n");
         contentArea.setVisible(true);
         for(ActionListener al: saveIcon.getActionListeners())
@@ -117,9 +118,17 @@ public class MainFrame extends JFrame {
         saveIcon.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                book.setBookContent(Arrays.asList(contentArea.getText().split("\n")));
-                modelIOHandler.writeBookContent(book);
-                JOptionPane.showMessageDialog(null,"Book saved!");
+                doc.setContentAsList(Arrays.asList(contentArea.getText().split("\n")));
+                String message = null;
+                if (doc instanceof Book) {
+                    modelIOHandler.writeBookContent((Book) doc);
+                    message = "Book saved!";
+                }
+                if (doc instanceof Dictionary) {
+                    modelIOHandler.writeDictionary((Dictionary) doc);
+                    message = "Dictionary saved!";
+                }
+                JOptionPane.showMessageDialog(null,message);
                 saveIcon.setEnabled(false);
             }
         });

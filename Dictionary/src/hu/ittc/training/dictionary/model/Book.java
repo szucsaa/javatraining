@@ -19,4 +19,13 @@ public class Book extends Document {
         return name;
     }
 
+    @Override
+    public List<String> getContentAsList() {
+        return getBookContent();
+    }
+
+    @Override
+    public void setContentAsList(List<String> content) {
+        setBookContent(content);
+    }
 }

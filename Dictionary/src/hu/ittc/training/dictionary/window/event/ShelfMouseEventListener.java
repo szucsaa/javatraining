@@ -1,16 +1,19 @@
 package hu.ittc.training.dictionary.window.event;
 
+import hu.ittc.training.dictionary.model.Document;
 import hu.ittc.training.dictionary.window.MainFrame;
 
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
-public class BookShelfMouseEventListener implements MouseListener {
+public class ShelfMouseEventListener implements MouseListener {
 
     private MainFrame mainFrame;
+    private Document.DocumentType doctype;
 
-    public BookShelfMouseEventListener(MainFrame mainFrame) {
+    public ShelfMouseEventListener(MainFrame mainFrame, Document.DocumentType doctype) {
         this.mainFrame = mainFrame;
+        this.doctype = doctype;
     }
 
     @Override
@@ -20,7 +23,7 @@ public class BookShelfMouseEventListener implements MouseListener {
 
     @Override
     public void mousePressed(MouseEvent e) {
-        mainFrame.drawBookTree(false);
+        mainFrame.drawBookTree(doctype,false);
     }
 
     @Override

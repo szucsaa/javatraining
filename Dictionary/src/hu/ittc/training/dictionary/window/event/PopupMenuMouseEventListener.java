@@ -2,11 +2,9 @@ package hu.ittc.training.dictionary.window.event;
 
 import hu.ittc.training.dictionary.model.Book;
 import hu.ittc.training.dictionary.model.Dictionary;
-import hu.ittc.training.dictionary.model.Document;
 import hu.ittc.training.dictionary.model.Translator;
 import hu.ittc.training.dictionary.window.MainFrame;
 
-import javax.swing.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
