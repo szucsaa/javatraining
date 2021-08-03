@@ -10,6 +10,7 @@ import hu.ittc.training.dictionary.window.event.*;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Arrays;
 
 public class MainFrame extends JFrame {
 
@@ -56,6 +57,7 @@ public class MainFrame extends JFrame {
         this.setVisible(true);
         this.getContentPane().setLayout(null);
 
+        this.setLocationRelativeTo(null);
         getContentPane().setLayout(null);
     }
 
@@ -94,7 +96,7 @@ public class MainFrame extends JFrame {
         repaint();
     }
 
-    public Book searchBook(String bookName) {
+    public Book pickBook(String bookName) {
         Book chosenBook = (Book) bookShelf.getDocument(bookName);
         showContentArea(chosenBook);
         return chosenBook;
@@ -112,6 +114,7 @@ public class MainFrame extends JFrame {
         saveIcon.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                book.setBookContent(Arrays.asList(contentArea.getText().split("\n")));
                 modelIOHandler.writeBookContent(book);
                 JOptionPane.showMessageDialog(null,"Book saved!");
             }
