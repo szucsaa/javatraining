@@ -28,7 +28,8 @@ public class BookMouseListener implements MouseListener {
     @Override
     public void mousePressed(MouseEvent e) {
         TreePath selectedPath = tree.getPathForLocation(e.getX(), e.getY());
-        tree.setSelectionPath(selectedPath);
+        if (selectedPath==null)
+            return;
         Book book = mainFrame.searchBook(selectedPath.getLastPathComponent().toString());
 
         if(SwingUtilities.isRightMouseButton(e))
