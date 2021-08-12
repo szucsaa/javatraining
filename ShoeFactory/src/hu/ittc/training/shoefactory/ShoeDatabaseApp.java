@@ -1,6 +1,7 @@
 package hu.ittc.training.shoefactory;
 
 import hu.ittc.training.shoefactory.model.Owner;
+import hu.ittc.training.shoefactory.model.Shoe;
 import hu.ittc.training.shoefactory.persistence.DBConnector;
 
 import java.sql.Connection;
@@ -15,6 +16,9 @@ public class ShoeDatabaseApp {
             Connection conn = DriverManager.getConnection(args[1], args[2], args[3]);
             for (Owner o: DBConnector.readOwners(conn)){
                 System.out.println(o.toString());
+            }
+            for (Shoe s : DBConnector.readShoes(conn)) {
+                System.out.println(s.toString());
             }
             conn.close();
         } catch (SQLException | ClassNotFoundException e) {
