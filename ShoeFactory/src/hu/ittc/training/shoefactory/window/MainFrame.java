@@ -1,6 +1,7 @@
 package hu.ittc.training.shoefactory.window;
 
-import hu.ittc.training.shoefactory.event.AddElementMouseListener;
+import hu.ittc.training.shoefactory.event.AddElementMouseEventListener;
+import hu.ittc.training.shoefactory.event.DrawPopUpMouseListener;
 import hu.ittc.training.shoefactory.event.OpenOwnerMouseEventListener;
 import hu.ittc.training.shoefactory.event.OpenShoeMouseEventListener;
 import hu.ittc.training.shoefactory.model.Owner;
@@ -27,10 +28,10 @@ public class MainFrame extends JFrame {
         this.shoeList = shoeList;
 
         ownerTree = new JTree(ownerList.toArray());
-        ownerTree.addMouseListener(new AddElementMouseListener(this, ownerList, ownerTree));
+        ownerTree.addMouseListener(new DrawPopUpMouseListener(this, ownerList, ownerTree, new OwnerFormCreator()));
 
         shoeTree = new JTree(shoeList.toArray());
-        shoeTree.addMouseListener(new AddElementMouseListener(this, shoeList, shoeTree));
+        shoeTree.addMouseListener(new DrawPopUpMouseListener(this, shoeList, shoeTree, null));
 
         drawFrame();
     }
@@ -90,12 +91,14 @@ public class MainFrame extends JFrame {
         repaint();
     }
 
-    public void drawPopup(Object source) {
+    public void drawPopup(JTree source, ArrayList objectList, FormCreator formCreator) {
 
         JPopupMenu popupMenu = new JPopupMenu();
 
         JMenuItem newJMenuItem = new JMenuItem("Add");
         popupMenu.add(newJMenuItem);
+
+        newJMenuItem.addMouseListener(new AddElementMouseEventListener(objectList, source, formCreator));
 
         popupMenu.show((JTree) source, 50, 0);
         popupMenu.setVisible(true);
