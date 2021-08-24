@@ -23,7 +23,7 @@ public class OpenShoeMouseEventListener implements MouseListener {
     @Override
     public void mousePressed(MouseEvent e) {
 
-        mainFrame.drawShoe();
+        mainFrame.drawShoe(null);
     }
 
     @Override

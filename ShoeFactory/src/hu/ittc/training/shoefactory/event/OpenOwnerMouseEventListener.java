@@ -23,7 +23,7 @@ public class OpenOwnerMouseEventListener implements MouseListener {
     @Override
     public void mousePressed(MouseEvent e) {
 
-        mainFrame.drawOwner();
+        mainFrame.drawOwner(null);
     }
 
     @Override

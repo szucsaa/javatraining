@@ -24,16 +24,26 @@ public class MainFrame extends JFrame {
 
     public MainFrame(ArrayList<Owner> ownerList, ArrayList<Shoe> shoeList) throws HeadlessException {
 
-        this.ownerList = ownerList;
-        this.shoeList = shoeList;
-
-        ownerTree = new JTree(ownerList.toArray());
-        ownerTree.addMouseListener(new DrawPopUpMouseListener(this, ownerList, ownerTree, new OwnerFormCreator()));
-
-        shoeTree = new JTree(shoeList.toArray());
-        shoeTree.addMouseListener(new DrawPopUpMouseListener(this, shoeList, shoeTree, null));
+        createAndReplaceJTree(ownerList, new OwnerFormCreator(), false);
+        createAndReplaceJTree(shoeList, new ShoeFormCreator(), false);
 
         drawFrame();
+    }
+
+    public void createAndReplaceJTree(ArrayList list, FormCreator fc, boolean draw){
+
+        if (fc instanceof OwnerFormCreator) {
+            JTree oldTree = ownerTree;
+            ownerTree = new JTree(list.toArray());
+            ownerTree.addMouseListener(new DrawPopUpMouseListener(this, ownerList = list, ownerTree, new OwnerFormCreator()));
+            if (draw) drawOwner(oldTree);
+        }
+        else {
+            JTree oldTree = shoeTree;
+            shoeTree = new JTree(list.toArray());
+            shoeTree.addMouseListener(new DrawPopUpMouseListener(this, shoeList = list, shoeTree, new ShoeFormCreator()));
+            if (draw) drawShoe(oldTree);
+        }
     }
 
     private void drawFrame() {
@@ -63,10 +73,11 @@ public class MainFrame extends JFrame {
         getContentPane().setLayout(null);
     }
 
-    public void drawOwner() {
+    public void drawOwner(JTree oldTree) {
 
         getContentPane().remove(ownerLabel);
-        getContentPane().remove(ownerTree);
+        if (oldTree != null)
+            getContentPane().remove(oldTree);
 
         getContentPane().add(ownerLabel);
         ownerLabel.setBounds(0,0,495,30);
@@ -77,10 +88,11 @@ public class MainFrame extends JFrame {
         repaint();
     }
 
-    public void drawShoe() {
+    public void drawShoe(JTree oldTree) {
 
         getContentPane().remove(shoeLabel);
-        getContentPane().remove(shoeTree);
+        if (oldTree != null)
+            getContentPane().remove(oldTree);
 
         getContentPane().add(shoeLabel);
         shoeLabel.setBounds(500,0,495,30);
@@ -98,7 +110,7 @@ public class MainFrame extends JFrame {
         JMenuItem newJMenuItem = new JMenuItem("Add");
         popupMenu.add(newJMenuItem);
 
-        newJMenuItem.addMouseListener(new AddElementMouseEventListener(objectList, source, formCreator));
+        newJMenuItem.addMouseListener(new AddElementMouseEventListener(objectList, source, formCreator, this));
 
         popupMenu.show((JTree) source, 50, 0);
         popupMenu.setVisible(true);
