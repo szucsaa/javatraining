@@ -11,7 +11,13 @@ import java.util.ArrayList;
 
 public class DBConnector {
 
-    public static ArrayList<Owner> readOwners(Connection conn){
+    private Connection conn;
+
+    public DBConnector(Connection conn){
+        this.conn = conn;
+    }
+
+    public ArrayList<Owner> readOwners(){
         ArrayList<Owner> owners = new ArrayList<>();
         try (PreparedStatement ps = conn.prepareStatement("select * from owner;");
              ResultSet rs = ps.executeQuery()) {
@@ -31,7 +37,7 @@ public class DBConnector {
         return owners;
     }
 
-    public static ArrayList<Shoe> readShoes(Connection conn) {
+    public ArrayList<Shoe> readShoes() {
         ArrayList<Shoe> shoes = new ArrayList<>();
         try (PreparedStatement ps = conn.prepareStatement("select * from shoe;");
              ResultSet rs = ps.executeQuery()) {
@@ -49,7 +55,7 @@ public class DBConnector {
         return shoes;
     }
 
-    public static void saveOwner(Connection conn, Owner owner) {
+    public void saveOwner(Owner owner) {
 
         try (PreparedStatement ps = conn.prepareStatement("insert into owner values (?, ?, null);")) {
 
@@ -64,7 +70,7 @@ public class DBConnector {
 
     }
 
-    public static void saveShoe(Connection conn, Shoe shoe) {
+    public void saveShoe(Shoe shoe) {
 
         try (PreparedStatement ps = conn.prepareStatement("insert into shoe values (?, ?, ?);")) {
 

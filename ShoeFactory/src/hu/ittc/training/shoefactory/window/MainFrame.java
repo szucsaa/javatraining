@@ -6,15 +6,15 @@ import hu.ittc.training.shoefactory.event.OpenOwnerMouseEventListener;
 import hu.ittc.training.shoefactory.event.OpenShoeMouseEventListener;
 import hu.ittc.training.shoefactory.model.Owner;
 import hu.ittc.training.shoefactory.model.Shoe;
+import hu.ittc.training.shoefactory.persistence.DBConnector;
 
 import javax.swing.*;
 import java.awt.*;
-import java.sql.Connection;
 import java.util.ArrayList;
 
-public class MainFrame extends JFrame {
+public class MainFrame extends JDialog {
 
-    private Connection connection;
+    private DBConnector dbConnector;
 
     private ArrayList<Owner> ownerList ;
     private ArrayList<Shoe> shoeList;
@@ -25,21 +25,14 @@ public class MainFrame extends JFrame {
     private JLabel shoeLabel = new JLabel("Shoe");
     private JTree shoeTree;
 
-    public MainFrame(ArrayList<Owner> ownerList, ArrayList<Shoe> shoeList, Connection connection) throws HeadlessException {
+    public MainFrame(DBConnector dbConnector) throws HeadlessException {
 
-        this.connection = connection;
+        this.dbConnector = dbConnector;
 
-        createAndReplaceJTree(ownerList, new OwnerFormCreator(connection), false);
-        createAndReplaceJTree(shoeList, new ShoeFormCreator(connection), false);
+        createAndReplaceJTree(dbConnector.readOwners(), new OwnerFormCreator(dbConnector), false);
+        createAndReplaceJTree(dbConnector.readShoes(), new ShoeFormCreator(dbConnector), false);
 
         drawFrame();
-    }
-
-    @Override
-    protected void finalize() throws Throwable {
-
-        connection.close();
-        super.finalize();
     }
 
     public void createAndReplaceJTree(ArrayList list, FormCreator fc, boolean draw){
@@ -47,13 +40,13 @@ public class MainFrame extends JFrame {
         if (fc instanceof OwnerFormCreator) {
             JTree oldTree = ownerTree;
             ownerTree = new JTree(list.toArray());
-            ownerTree.addMouseListener(new DrawPopUpMouseListener(this, ownerList = list, ownerTree, new OwnerFormCreator(connection)));
+            ownerTree.addMouseListener(new DrawPopUpMouseListener(this, ownerList = list, ownerTree, new OwnerFormCreator(dbConnector)));
             if (draw) drawOwner(oldTree);
         }
         else {
             JTree oldTree = shoeTree;
             shoeTree = new JTree(list.toArray());
-            shoeTree.addMouseListener(new DrawPopUpMouseListener(this, shoeList = list, shoeTree, new ShoeFormCreator(connection)));
+            shoeTree.addMouseListener(new DrawPopUpMouseListener(this, shoeList = list, shoeTree, new ShoeFormCreator(dbConnector)));
             if (draw) drawShoe(oldTree);
         }
     }
@@ -77,8 +70,8 @@ public class MainFrame extends JFrame {
 
         this.setJMenuBar(jMenuBar);
         this.setSize(1000, 500);
-        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        this.setVisible(true);
+        this.setModal(true);
+        this.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
         this.getContentPane().setLayout(null);
 
         this.setLocationRelativeTo(null);

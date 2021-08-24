@@ -1,19 +1,20 @@
 package hu.ittc.training.shoefactory.window;
 
+import hu.ittc.training.shoefactory.persistence.DBConnector;
+
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.sql.Connection;
 
 public abstract class FormCreator extends JDialog {
 
-    Connection connection;
+    DBConnector dbConnector;
 
     JTextField textField;
     JTextField textField2;
 
-    public FormCreator(String labelText1, String labelText2, Connection connection) {
-        this.connection = connection;
+    public FormCreator(String labelText1, String labelText2, DBConnector dbConnector) {
+        this.dbConnector = dbConnector;
         JLabel label = new JLabel(labelText1);
         JLabel label2 = new JLabel(labelText2);
         this.setModal(true);
@@ -42,6 +43,7 @@ public abstract class FormCreator extends JDialog {
         button.setBounds(80,120,60,40);
 
         this.setLocationRelativeTo(null);
+        this.setDefaultCloseOperation(JDialog.DO_NOTHING_ON_CLOSE);
     }
 
     public abstract Object getCreatedObject();
