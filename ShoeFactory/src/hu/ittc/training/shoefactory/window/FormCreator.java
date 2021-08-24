@@ -3,13 +3,17 @@ package hu.ittc.training.shoefactory.window;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.Connection;
 
 public abstract class FormCreator extends JDialog {
+
+    Connection connection;
 
     JTextField textField;
     JTextField textField2;
 
-    public FormCreator(String labelText1, String labelText2) {
+    public FormCreator(String labelText1, String labelText2, Connection connection) {
+        this.connection = connection;
         JLabel label = new JLabel(labelText1);
         JLabel label2 = new JLabel(labelText2);
         this.setModal(true);

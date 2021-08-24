@@ -9,9 +9,12 @@ import hu.ittc.training.shoefactory.model.Shoe;
 
 import javax.swing.*;
 import java.awt.*;
+import java.sql.Connection;
 import java.util.ArrayList;
 
 public class MainFrame extends JFrame {
+
+    private Connection connection;
 
     private ArrayList<Owner> ownerList ;
     private ArrayList<Shoe> shoeList;
@@ -22,12 +25,21 @@ public class MainFrame extends JFrame {
     private JLabel shoeLabel = new JLabel("Shoe");
     private JTree shoeTree;
 
-    public MainFrame(ArrayList<Owner> ownerList, ArrayList<Shoe> shoeList) throws HeadlessException {
+    public MainFrame(ArrayList<Owner> ownerList, ArrayList<Shoe> shoeList, Connection connection) throws HeadlessException {
 
-        createAndReplaceJTree(ownerList, new OwnerFormCreator(), false);
-        createAndReplaceJTree(shoeList, new ShoeFormCreator(), false);
+        this.connection = connection;
+
+        createAndReplaceJTree(ownerList, new OwnerFormCreator(connection), false);
+        createAndReplaceJTree(shoeList, new ShoeFormCreator(connection), false);
 
         drawFrame();
+    }
+
+    @Override
+    protected void finalize() throws Throwable {
+
+        connection.close();
+        super.finalize();
     }
 
     public void createAndReplaceJTree(ArrayList list, FormCreator fc, boolean draw){
@@ -35,13 +47,13 @@ public class MainFrame extends JFrame {
         if (fc instanceof OwnerFormCreator) {
             JTree oldTree = ownerTree;
             ownerTree = new JTree(list.toArray());
-            ownerTree.addMouseListener(new DrawPopUpMouseListener(this, ownerList = list, ownerTree, new OwnerFormCreator()));
+            ownerTree.addMouseListener(new DrawPopUpMouseListener(this, ownerList = list, ownerTree, new OwnerFormCreator(connection)));
             if (draw) drawOwner(oldTree);
         }
         else {
             JTree oldTree = shoeTree;
             shoeTree = new JTree(list.toArray());
-            shoeTree.addMouseListener(new DrawPopUpMouseListener(this, shoeList = list, shoeTree, new ShoeFormCreator()));
+            shoeTree.addMouseListener(new DrawPopUpMouseListener(this, shoeList = list, shoeTree, new ShoeFormCreator(connection)));
             if (draw) drawShoe(oldTree);
         }
     }

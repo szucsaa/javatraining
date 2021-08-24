@@ -1,16 +1,22 @@
 package hu.ittc.training.shoefactory.window;
 
 import hu.ittc.training.shoefactory.model.Shoe;
+import hu.ittc.training.shoefactory.persistence.DBConnector;
+
+import java.sql.Connection;
 
 public class ShoeFormCreator extends FormCreator {
 
-    public ShoeFormCreator(){
-        super("Please add the name of the brand:", "Please add the size:");
+    public ShoeFormCreator(Connection connection){
+        super("Please add the name of the brand:", "Please add the size:", connection);
     }
 
     @Override
     public Object getCreatedObject() {
-        return new Shoe(Integer.parseInt(textField2.getText()), textField.getText(), false);
+
+        Shoe shoe = new Shoe(Integer.parseInt(textField2.getText()), textField.getText(), false);
+        DBConnector.saveShoe(connection, shoe);
+        return shoe;
     }
 
 }

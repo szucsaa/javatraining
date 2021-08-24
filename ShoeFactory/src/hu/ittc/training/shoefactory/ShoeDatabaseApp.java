@@ -23,9 +23,8 @@ public class ShoeDatabaseApp {
                 System.out.println(s.toString());
             }
 
-            new MainFrame(DBConnector.readOwners(conn), DBConnector.readShoes(conn));
+            new MainFrame(DBConnector.readOwners(conn), DBConnector.readShoes(conn), conn);
 
-            conn.close();
         } catch (SQLException | ClassNotFoundException e) {
             e.printStackTrace();
         } catch (IllegalAccessException e) {

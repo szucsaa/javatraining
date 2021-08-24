@@ -48,4 +48,34 @@ public class DBConnector {
         }
         return shoes;
     }
+
+    public static void saveOwner(Connection conn, Owner owner) {
+
+        try (PreparedStatement ps = conn.prepareStatement("insert into owner values (?, ?, null);")) {
+
+            ps.setString(1, owner.getName());
+            ps.setInt(2, owner.getFeetSize());
+
+            ps.execute();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    public static void saveShoe(Connection conn, Shoe shoe) {
+
+        try (PreparedStatement ps = conn.prepareStatement("insert into shoe values (?, ?, ?);")) {
+
+            ps.setString(1, shoe.getBrand());
+            ps.setInt(2, shoe.getSize());
+            ps.setBoolean(3, false);
+
+            ps.execute();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 }
