@@ -17,9 +17,9 @@ public class DBConnector {
         this.conn = conn;
     }
 
-    public ArrayList<Owner> readOwners(){
+    public ArrayList<Owner> readOwners(Integer querySize){
         ArrayList<Owner> owners = new ArrayList<>();
-        try (PreparedStatement ps = conn.prepareStatement("select * from owner;");
+        try (PreparedStatement ps = conn.prepareStatement("select * from owner "+(querySize==null?"":"where feetsize="+querySize)+";");
              ResultSet rs = ps.executeQuery()) {
             while (rs.next()){
                 int size = rs.getInt("feetsize");
@@ -37,9 +37,9 @@ public class DBConnector {
         return owners;
     }
 
-    public ArrayList<Shoe> readShoes() {
+    public ArrayList<Shoe> readShoes(Integer querySize) {
         ArrayList<Shoe> shoes = new ArrayList<>();
-        try (PreparedStatement ps = conn.prepareStatement("select * from shoe;");
+        try (PreparedStatement ps = conn.prepareStatement("select * from shoe "+(querySize==null?"":"where size="+querySize)+";");
              ResultSet rs = ps.executeQuery()) {
             while (rs.next()){
                 String brand = rs.getString("brand");
@@ -84,4 +84,5 @@ public class DBConnector {
             e.printStackTrace();
         }
     }
+
 }

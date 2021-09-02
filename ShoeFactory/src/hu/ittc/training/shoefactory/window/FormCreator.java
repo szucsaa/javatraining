@@ -5,6 +5,7 @@ import hu.ittc.training.shoefactory.persistence.DBConnector;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 
 public abstract class FormCreator extends JDialog {
 
@@ -47,5 +48,7 @@ public abstract class FormCreator extends JDialog {
     }
 
     public abstract Object getCreatedObject();
+
+    public abstract ArrayList getObjectList(Integer size);
 
 }

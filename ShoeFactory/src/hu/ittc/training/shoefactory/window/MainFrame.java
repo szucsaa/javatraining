@@ -1,9 +1,6 @@
 package hu.ittc.training.shoefactory.window;
 
-import hu.ittc.training.shoefactory.event.AddElementMouseEventListener;
-import hu.ittc.training.shoefactory.event.DrawPopUpMouseListener;
-import hu.ittc.training.shoefactory.event.OpenOwnerMouseEventListener;
-import hu.ittc.training.shoefactory.event.OpenShoeMouseEventListener;
+import hu.ittc.training.shoefactory.event.*;
 import hu.ittc.training.shoefactory.model.Owner;
 import hu.ittc.training.shoefactory.model.Shoe;
 import hu.ittc.training.shoefactory.persistence.DBConnector;
@@ -29,24 +26,26 @@ public class MainFrame extends JDialog {
 
         this.dbConnector = dbConnector;
 
-        createAndReplaceJTree(dbConnector.readOwners(), new OwnerFormCreator(dbConnector), false);
-        createAndReplaceJTree(dbConnector.readShoes(), new ShoeFormCreator(dbConnector), false);
+        createAndReplaceJTree(new OwnerFormCreator(dbConnector), false);
+        createAndReplaceJTree(new ShoeFormCreator(dbConnector), false);
 
         drawFrame();
     }
 
-    public void createAndReplaceJTree(ArrayList list, FormCreator fc, boolean draw){
+    public void createAndReplaceJTree(FormCreator fc, boolean draw){
 
         if (fc instanceof OwnerFormCreator) {
             JTree oldTree = ownerTree;
-            ownerTree = new JTree(list.toArray());
-            ownerTree.addMouseListener(new DrawPopUpMouseListener(this, ownerList = list, ownerTree, new OwnerFormCreator(dbConnector)));
+            ownerList = dbConnector.readOwners(null);
+            ownerTree = new JTree(ownerList.toArray());
+            ownerTree.addMouseListener(new DrawPopUpMouseListener(this, ownerList, ownerTree, new OwnerFormCreator(dbConnector)));
             if (draw) drawOwner(oldTree);
         }
         else {
             JTree oldTree = shoeTree;
-            shoeTree = new JTree(list.toArray());
-            shoeTree.addMouseListener(new DrawPopUpMouseListener(this, shoeList = list, shoeTree, new ShoeFormCreator(dbConnector)));
+            shoeList = dbConnector.readShoes(null);
+            shoeTree = new JTree(shoeList.toArray());
+            shoeTree.addMouseListener(new DrawPopUpMouseListener(this, shoeList, shoeTree, new ShoeFormCreator(dbConnector)));
             if (draw) drawShoe(oldTree);
         }
     }
@@ -114,10 +113,23 @@ public class MainFrame extends JDialog {
 
         JMenuItem newJMenuItem = new JMenuItem("Add");
         popupMenu.add(newJMenuItem);
-
         newJMenuItem.addMouseListener(new AddElementMouseEventListener(objectList, source, formCreator, this));
+
+        JMenu pairingMenu = new JMenu("Pairing");
+        popupMenu.add(pairingMenu);
+        pairingMenu.addMouseListener(new PairingMouseEventListener(objectList, source, formCreator, this, pairingMenu));
+
 
         popupMenu.show((JTree) source, 50, 0);
         popupMenu.setVisible(true);
+    }
+
+    public void drawListPopup(JMenu pairingMenu, Object source, FormCreator formCreator, int size, Object treeObject) {
+        for (Object o : formCreator.getObjectList(size)){
+            JMenuItem item = new JMenuItem(o.toString());
+            item.addMouseListener(new PairingItemMouseEventListener(treeObject, o, this, formCreator));
+            pairingMenu.add(item);
+        }
+        pairingMenu.setVisible(true);
     }
 }
