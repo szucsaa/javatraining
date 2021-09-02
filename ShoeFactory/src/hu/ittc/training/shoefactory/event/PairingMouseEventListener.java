@@ -35,7 +35,12 @@ public class PairingMouseEventListener implements MouseListener {
         if (tp == null) return;
 
         String str = tp.toString();
-        int size = Integer.parseInt(str.substring(str.indexOf(';')+1,str.length()-1).replace(";",""));
+        Integer size = null;
+        try {
+            size = Integer.parseInt(str.substring(str.indexOf(';') + 1, str.length() - 1).replace(";", ""));
+        }catch(NumberFormatException nex){
+            return;
+        }
 
         JTree.DynamicUtilTreeNode treeO = (JTree.DynamicUtilTreeNode) tp.getLastPathComponent();
         Object treeObject = treeO.getUserObject();

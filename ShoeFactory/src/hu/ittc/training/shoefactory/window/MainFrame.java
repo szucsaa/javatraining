@@ -26,22 +26,23 @@ public class MainFrame extends JDialog {
 
         this.dbConnector = dbConnector;
 
-        createAndReplaceJTree(new OwnerFormCreator(dbConnector), false);
-        createAndReplaceJTree(new ShoeFormCreator(dbConnector), false);
+        createAndReplaceJTree(new OwnerFormCreator(dbConnector), false, false);
+        createAndReplaceJTree(new ShoeFormCreator(dbConnector), false, false);
 
         drawFrame();
     }
 
-    public void createAndReplaceJTree(FormCreator fc, boolean draw){
+    public void createAndReplaceJTree(FormCreator fc, boolean draw, boolean both){
 
-        if (fc instanceof OwnerFormCreator) {
+        if (both || fc instanceof OwnerFormCreator) {
             JTree oldTree = ownerTree;
             ownerList = dbConnector.readOwners(null);
             ownerTree = new JTree(ownerList.toArray());
             ownerTree.addMouseListener(new DrawPopUpMouseListener(this, ownerList, ownerTree, new OwnerFormCreator(dbConnector)));
             if (draw) drawOwner(oldTree);
         }
-        else {
+
+        if (both || fc instanceof ShoeFormCreator) {
             JTree oldTree = shoeTree;
             shoeList = dbConnector.readShoes(null);
             shoeTree = new JTree(shoeList.toArray());
@@ -125,11 +126,12 @@ public class MainFrame extends JDialog {
     }
 
     public void drawListPopup(JMenu pairingMenu, Object source, FormCreator formCreator, int size, Object treeObject) {
+        if (pairingMenu.getItemCount()>0) return;
         for (Object o : formCreator.getObjectList(size)){
             JMenuItem item = new JMenuItem(o.toString());
-            item.addMouseListener(new PairingItemMouseEventListener(treeObject, o, this, formCreator));
+            item.addMouseListener(new PairingItemMouseEventListener(treeObject, o, this, formCreator, dbConnector));
             pairingMenu.add(item);
         }
-        pairingMenu.setVisible(true);
+        pairingMenu.getPopupMenu().pack();
     }
 }

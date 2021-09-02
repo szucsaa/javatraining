@@ -19,7 +19,7 @@ public class DBConnector {
 
     public ArrayList<Owner> readOwners(Integer querySize){
         ArrayList<Owner> owners = new ArrayList<>();
-        try (PreparedStatement ps = conn.prepareStatement("select * from owner "+(querySize==null?"":"where feetsize="+querySize)+";");
+        try (PreparedStatement ps = conn.prepareStatement("select * from owner "+(querySize==null?"":"where shoe is null and feetsize="+querySize)+";");
              ResultSet rs = ps.executeQuery()) {
             while (rs.next()){
                 int size = rs.getInt("feetsize");
@@ -39,14 +39,14 @@ public class DBConnector {
 
     public ArrayList<Shoe> readShoes(Integer querySize) {
         ArrayList<Shoe> shoes = new ArrayList<>();
-        try (PreparedStatement ps = conn.prepareStatement("select * from shoe "+(querySize==null?"":"where size="+querySize)+";");
+        try (PreparedStatement ps = conn.prepareStatement("select * from shoe "+(querySize==null?"":"where issold=0 and size="+querySize)+";");
              ResultSet rs = ps.executeQuery()) {
             while (rs.next()){
                 String brand = rs.getString("brand");
                 int size = rs.getInt("size");
                 Integer isSold = rs.getInt("issold");
 
-                Shoe s = new Shoe(size, brand, Boolean.parseBoolean(String.valueOf(isSold)));
+                Shoe s = new Shoe(size, brand, isSold==1?true:false);
                 shoes.add(s);
             }
         } catch (SQLException e) {
@@ -85,4 +85,20 @@ public class DBConnector {
         }
     }
 
+    public void updateOwnersShoe(Owner owner, Shoe shoe) {
+        try (PreparedStatement ps = conn.prepareStatement("update owner set shoe = ? where name=?;")) {
+            ps.setString(1, shoe.getBrand());
+            ps.setString(2, owner.getName());
+            ps.execute();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        try (PreparedStatement ps = conn.prepareStatement("update shoe set issold = 1 where brand=? and size = ?;")) {
+            ps.setString(1, shoe.getBrand());
+            ps.setInt(2, shoe.getSize());
+            ps.execute();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 }

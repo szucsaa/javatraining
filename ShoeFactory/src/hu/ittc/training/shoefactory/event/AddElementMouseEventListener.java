@@ -33,7 +33,7 @@ public class AddElementMouseEventListener implements MouseListener {
         formCreator.setVisible(true);
         Object newObject = formCreator.getCreatedObject();
         objectList.add(newObject);
-        mainFrame.createAndReplaceJTree(formCreator, true);
+        mainFrame.createAndReplaceJTree(formCreator, true, false);
     }
 
     @Override
